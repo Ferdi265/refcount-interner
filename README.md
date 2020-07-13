@@ -11,3 +11,26 @@ dropped, unused interned objects are deallocated.
 
 The two kinds of interners provided by this crate are `RcInterner` and
 `ArcInterner`, returning `Rc<T>` and `Arc<T>` objects respectively.
+
+## Documentation
+
+Documentation is provided via rustdoc, and can be built with `cargo doc`, or
+viewed online at
+[docs.rs/refcount-interner/](https://docs.rs/refcount-interner/).
+
+## License
+
+Licensed under either of
+
+- Apache License, Version 2.0
+    ([LICENSE-APACHE](LICENSE-APACHE) or http://www.apache.org/licenses/LICENSE-2.0)
+- MIT license
+    ([LICENSE-MIT](LICENSE-MIT) or http://opensource.org/licenses/MIT)
+
+at your option.
+
+## Contribution
+
+Unless you explicitly state otherwise, any contribution intentionally submitted
+for inclusion in the work by you, as defined in the Apache-2.0 license, shall be
+dual licensed as above, without any additional terms or conditions.
