@@ -65,6 +65,41 @@ impl<T: ?Sized + Hash + Eq> ArcInterner<T> {
         self.0.get(t).cloned()
     }
 
+    /// Intern a boxed object
+    ///
+    /// This method must be used to intern unsized types, since unsized types
+    /// cannot be passed to `intern()`. The two most common unsized types,
+    /// `&[T]` and `&str` can be interned with `intern_slice()` and
+    /// `intern_str()` as well.
+    ///
+    /// If the object has already been interned, the passed object will be
+    /// dropped and deallocated, and a reference to the already interned object
+    /// will be returned.
+    ///
+    /// If the object has not yet been interned, the passed object will be moved
+    /// into an `Arc<T>`, remembered for future calls to `intern()`, and
+    /// returned.
+    ///
+    /// # Example
+    /// ```rust
+    /// # use refcount_interner::ArcInterner;
+    /// let mut interner = ArcInterner::new();
+    ///
+    /// let x = Box::new(42);
+    /// let y = interner.intern_boxed(x);
+    ///
+    /// assert_eq!(*y, 42);
+    /// ```
+    pub fn intern_boxed(&mut self, t: Box<T>) -> Arc<T> {
+        if let Some(value) = self.0.get(t.as_ref()) {
+            value.clone()
+        } else {
+            let value: Arc<T> = Arc::from(t);
+            self.0.insert(value.clone());
+            value
+        }
+    }
+
     /// Deallocate all interned objects that are no longer referenced and shrink
     /// the internal storage to fit.
     ///
