@@ -1,4 +1,4 @@
-# `refcount_interner`
+# `refcount-interner`
 
 A simple reference-counted
 [interning](https://en.wikipedia.org/wiki/String_interning)
