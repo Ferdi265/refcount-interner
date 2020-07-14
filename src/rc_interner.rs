@@ -221,6 +221,30 @@ impl<T: ?Sized + Hash + Eq + Clone> RcInterner<[T]> {
             value
         }
     }
+
+    /// Intern an owned vector
+    ///
+    /// If the slice behind the vector has already been interned, a reference
+    /// to the already / interned slice will be returned.
+    ///
+    /// If the slice has not yet been interned, the passed vector will be moved
+    /// into an `Rc<[T]>`, remembered for future calls to `intern()`, and
+    /// returned.
+    ///
+    /// # Example
+    /// ```rust
+    ///
+    /// # use refcount_interner::RcInterner;
+    /// let mut interner = RcInterner::new();
+    ///
+    /// let v = vec![1, 2, 3];
+    /// let x = interner.intern_vec(v);
+    ///
+    /// assert_eq!(x.as_ref(), &[1, 2, 3]);
+    /// ```
+    pub fn intern_vec(&mut self, t: Vec<T>) -> Rc<[T]> {
+        self.intern_boxed(t.into_boxed_slice())
+    }
 }
 
 impl RcInterner<str> {
@@ -252,5 +276,29 @@ impl RcInterner<str> {
             self.0.insert(value.clone());
             value
         }
+    }
+
+    /// Intern an owned string
+    ///
+    /// If the string has already been interned, a reference to the already
+    /// interned string slice will be returned.
+    ///
+    /// If the string has not yet been interned, the passed string will be moved
+    /// into an `Rc<str>`, remembered for future calls to `intern()`, and
+    /// returned.
+    ///
+    /// # Example
+    /// ```rust
+    ///
+    /// # use refcount_interner::RcInterner;
+    /// let mut interner = RcInterner::new();
+    ///
+    /// let s = String::from("hello");
+    /// let x = interner.intern_string(s);
+    ///
+    /// assert_eq!(x.as_ref(), "hello");
+    /// ```
+    pub fn intern_string(&mut self, t: String) -> Rc<str> {
+        self.intern_boxed(t.into_boxed_str())
     }
 }
