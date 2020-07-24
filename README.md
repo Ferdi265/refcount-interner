@@ -12,6 +12,21 @@ dropped, unused interned objects are deallocated.
 The two kinds of interners provided by this crate are `RcInterner` and
 `ArcInterner`, returning `Rc<T>` and `Arc<T>` objects respectively.
 
+
+## Example
+
+```rust
+use std::rc::Rc;
+use refcount_interner::RcInterner;
+
+let mut interner = RcInterner::new();
+
+let hello = interner.intern_str("hello");
+let world = interner.intern_str("world");
+
+assert!(Rc::ptr_eq(&hello, &interner.intern_str("hello")));
+```
+
 ## Documentation
 
 Documentation is provided via rustdoc, and can be built with `cargo doc`, or
