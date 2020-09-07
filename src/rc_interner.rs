@@ -160,7 +160,7 @@ impl<T: Sized + Hash + Eq> RcInterner<T> {
     }
 }
 
-impl<T: ?Sized + Hash + Eq + Clone> RcInterner<T> {
+impl<T: Sized + Hash + Eq + Clone> RcInterner<T> {
     /// Intern a borrowed object, cloning if it has not yet been interned
     ///
     /// If the object has already been interned, a reference to the already
@@ -191,7 +191,7 @@ impl<T: ?Sized + Hash + Eq + Clone> RcInterner<T> {
     }
 }
 
-impl<T: ?Sized + Hash + Eq + Clone> RcInterner<[T]> {
+impl<T: Sized + Hash + Eq + Clone> RcInterner<[T]> {
     /// Intern a slice object
     ///
     /// This method can be used to intern slices without boxing them.
